@@ -1,0 +1,88 @@
+{# templates/approvisionnement/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des Approvisionnements{% endblock %}
+
+{% block body %}
+    <h1 class="my-4">Gestion des Approvisionnements</h1>
+    
+    {# --- Bouton Nouveau (Maquette) --- #}
+    <a href="#" class="btn btn-primary float-end mb-4">+ Nouvel approvisionnement</a>
+
+    {# --- Section Filtres et Recherche (Maquette) --- #}
+    <div class="card shadow-sm p-3 mb-4 clearfix">
+        <h2 class="h5 mb-3">Filtres et recherche</h2>
+        {# Les champs de formulaire ici... #}
+        <div class="row g-2">
+            <div class="col-md-3">
+                <input type="text" placeholder="Rechercher..." class="form-control">
+            </div>
+            <div class="col-md-2">
+                <select class="form-select"><option>Tous les fournisseurs</option></select>
+            </div>
+            {# ... Autres filtres ... #}
+            <div class="col-md-auto">
+                <button class="btn btn-primary">Filtrer</button>
+            </div>
+            <div class="col-md-auto">
+                <button class="btn btn-outline-secondary">Réinitialiser</button>
+            </div>
+        </div>
+    </div>
+
+    {# --- Tableau des Approvisionnements --- #}
+    <div class="card p-4 shadow-sm">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>Référence</th>
+                    <th>Date</th>
+                    <th>Fournisseur</th>
+                    <th>Articles</th>
+                    <th>Montant total</th>
+                    <th>Statut</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for appro in approvisionnements %}
+                <tr>
+                    <td>{{ appro.reference }}</td>
+                    <td>{{ appro.date|date('d/m/Y') }}</td>
+                    <td>{{ appro.fournisseur.nom }}</td>
+                    <td>
+                        <span class="badge rounded-pill text-bg-info">
+                            {# Comptage des lignes pour le nombre d'articles #}
+                            {{ appro.lignes|length }} article{{ appro.lignes|length > 1 ? 's' : '' }}
+                        </span>
+                    </td>
+                    <td>
+                        <strong>{{ appro.montantTotal|number_format(0, ',', ' ') }} FCFA</strong>
+                    </td>
+                    <td>
+                        {# Logique de statut pour afficher la couleur correspondante #}
+                        {% set statusClass = appro.statut == 'Reçu' ? 'success' : 'warning text-dark' %}
+                        <span class="badge bg-{{ statusClass }}">{{ appro.statut }}</span>
+                    </td>
+                    <td class="text-center">
+                        {# Simuler les actions de la maquette #}
+                        <button class="btn btn-sm btn-primary">👁️</button>
+                        <button class="btn btn-sm btn-warning">✏️</button>
+                        <button class="btn btn-sm btn-danger">🗑️</button>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7" class="text-center">Aucun approvisionnement n'a été trouvé.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {# --- Section Statistiques (Maquette) - À implémenter dans une prochaine étape si demandé --- #}
+    <div class="row mt-4">
+        {# ... Ce code ne sera ajouté que si vous demandez l'implémentation des calculs de stat... #}
+    </div>
+{% endblock %}
